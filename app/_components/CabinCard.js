@@ -11,7 +11,8 @@ function CabinCard({ cabin }) {
           src={image}
           fill
           alt={`Cabin ${name}`}
-          className=" flex-1 border-r border-primary-800 object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="flex-1 border-r border-primary-800 object-cover"
         />
       </div>
 
@@ -69,5 +70,4 @@ Image is made fit to that container using css.
 
 Important: Images are hosted in supabase  not in Next.js. 
 So, supabase must be configured in next.config.js file. 
-
 */
