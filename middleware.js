@@ -23,5 +23,5 @@ The authorized callback needs to return Boolean value.
 - false: unauthorized and user cannot navigate to that route. 
 */
 export const config = {
-  matcher: ["/account", "/cabins"],
+  matcher: ["/account"],
 };
