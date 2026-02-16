@@ -2,15 +2,16 @@ import { Suspense } from "react";
 import CabinList from "../_components/CabinList";
 import Spinner from "../_components/Spinner";
 import Filter from "../_components/Filter";
-import { ReservationProvider } from "../_components/ReservationContext";
 import ReservationReminder from "../_components/ReservationReminder";
 
 export const metadata = {
   title: "Cabins",
 };
 
+
 export default function Page({ searchParams }) {
   const filter = searchParams?.capacity || "all";
+
 
   return (
     <div>
@@ -32,13 +33,11 @@ export default function Page({ searchParams }) {
         <CabinList filter={filter} />
         <ReservationReminder />
       </Suspense>
-      xx
     </div>
   );
 }
 
-/*
-This is server component and data is directly fetching using fetch fun.
+/*This is server component and data is directly fetching using fetch fun.
 The comp is madea async as we need to fetch data.
 The data appears in terminal which came from server.
 Data is fetched in server and everything is assembled in html and send off to browser.

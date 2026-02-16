@@ -12,4 +12,4 @@ export default function Page() {
 }
 
 /* How to connect authentication flow with custom login page? 
-pages option added to auth config */
+adding pages option added to auth config(app/_lib/auth.js) */

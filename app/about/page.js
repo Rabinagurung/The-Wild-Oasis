@@ -18,7 +18,6 @@ export default async function Page() {
         <h1 className="text-4xl mb-10 text-accent-400 font-medium">
           Welcome to The Wild Oasis
         </h1>
-
         <div className="space-y-8">
           <p>
             Where nature&apos;s beauty and comfortable living blend seamlessly.
@@ -40,7 +39,6 @@ export default async function Page() {
           </p>
         </div>
       </div>
-
       <div className="col-span-2">
         <Image
           src={image1}
@@ -59,12 +57,10 @@ export default async function Page() {
           alt="Family that manages The Wild Oasis"
         />
       </div>
-
       <div className="col-span-3">
         <h1 className="text-4xl mb-10 text-accent-400 font-medium">
           Managed by our family since 1962
         </h1>
-
         <div className="space-y-8">
           <p>
             Since 1962, The Wild Oasis has been a cherished family-run retreat.
@@ -80,7 +76,6 @@ export default async function Page() {
             Wild Oasis soon, where tradition meets tranquility, and every visit
             is like coming home.
           </p>
-
           <div>
             <Link
               href="/cabins"

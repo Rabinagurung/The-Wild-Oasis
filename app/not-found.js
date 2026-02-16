@@ -20,7 +20,7 @@ function NotFound() {
 export default NotFound;
 
 /* If the user navigates to route that does not exists then 404 not-found error will be thrown. 
-    For that we create not-found.js file that will contain our owb UI.
+    For that we create not-found.js file that will contain our own UI.
 
     If user navigates to non-existing cabinId route, then error boundary will catch that error. 
     But that error is not-found error, so that error can be shown using not-found page manually. 

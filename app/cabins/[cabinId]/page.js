@@ -22,12 +22,13 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }) {
   const cabin = await getCabin(params.cabinId);
+ 
 
   return (
-    <div className="max-w-6xl mx-auto mt-8">
+    <div className="max-w-6xl mx-auto mt-8 ">
       <Cabin cabin={cabin} />
       <div>
-        <h2 className="text-5xl font-semibold text-center mb-8">
+        <h2 className="text-5xl font-semibold text-center mb-8 text-accent-400">
           Reserve today. Pay on arrival.
         </h2>
         <Suspense fallback={<Spinner />}>
@@ -35,7 +36,7 @@ export default async function Page({ params }) {
         </Suspense>
       </div>
     </div>
-  );
+  ); 
 }
 
 /* 1. localhost:3000/cabins/cabinId 

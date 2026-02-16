@@ -1,8 +1,6 @@
 import { eachDayOfInterval } from "date-fns";
 import { supabase } from "./supabase";
 import { notFound } from "next/navigation";
-/////////////
-// GET
 
 export async function getCabin(id) {
   const { data, error } = await supabase
@@ -37,6 +35,7 @@ export async function getCabinPrice(id) {
 }
 
 export const getCabins = async function () {
+
   const { data, error } = await supabase
     .from("cabins")
     .select("id, name, maxCapacity, regularPrice, discount, image")
@@ -148,9 +147,6 @@ export async function getCountries() {
   }
 }
 
-/////////////
-// CREATE
-
 export async function createGuest(newGuest) {
   const { data, error } = await supabase.from("guests").insert([newGuest]);
 
@@ -162,38 +158,16 @@ export async function createGuest(newGuest) {
   return data;
 }
 
-// export async function createBooking(newBooking) {
-//   const { data, error } = await supabase
-//     .from("bookings")
-//     .insert([newBooking])
-//     // So that the newly created object gets returned!
-//     .select()
-//     .single();
-
-//   if (error) {
-//     console.error(error);
-//     throw new Error("Booking could not be created");
-//   }
-
-//   return data;
-// }
-
-/////////////
-// UPDATE
-
-// The updatedFields is an object which should ONLY contain the updated data
-// export async function updateGuest(id, updatedFields) {
-
-// }
-
 export async function updateBooking(id, updatedFields) {
+
+
   const { data, error } = await supabase
     .from("bookings")
     .update(updatedFields)
     .eq("id", id)
     .select()
     .single();
-
+  
   if (error) {
     console.error(error);
     throw new Error("Booking could not be updated");
@@ -201,9 +175,7 @@ export async function updateBooking(id, updatedFields) {
   return data;
 }
 
-/////////////
 // DELETE
-
 export async function deleteBooking(id) {
   const { data, error } = await supabase.from("bookings").delete().eq("id", id);
 

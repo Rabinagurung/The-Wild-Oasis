@@ -18,7 +18,8 @@ function SignInButton() {
 
 export default SignInButton;
 
-/* When button is clicked, user must be signed in to Google provider using exported signIn function from auth. 
+/* When button is clicked, user must be signed in to Google provider 
+using exported signIn function from auth. 
 But if we add onClick prop on button this component will become client component. 
 Keeping the auth in server is more beneficial. 
 
@@ -29,12 +30,17 @@ When the button is clicked then action attribute of form is used to execute serv
 Server actions: 
   They are used to add interactivity in server component. 
   They always run on server. 
-  They can be called on both client and server components but will be executed on server only, 
+  They can be called on both client and server components,
+  but will be executed on server only.
 
 Server actions are created using file convention action.js in lib. 
 There we will provide all the required server action functions. 
 
-There will be two server actions: 
+How to invoke ServerAction: using action attribute of form. 
+All the form input data will be seralized. 
+form will automatically submit all the data to that action function. 
+
+There will be two server actions for authentication: 
 a. SignInAction
 b. SignOutAction
 */

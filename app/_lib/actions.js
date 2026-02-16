@@ -40,16 +40,22 @@ export async function createBooking(bookingData, formData) {
 
   const newBooking = {
     ...bookingData,
-    numGuests: Number(formData.get("numGuests")),
-    observations: formData.get("observations"),
     guestId: session.user.guestId,
+    numGuests: Number(formData.get("numGuests")),
+    observations: formData.get("observations").slice(0, 1000),
+    totalPrice: bookingData.cabinPrice,
+    status: "unconfirmed",
+    hasBreakfast: false,
+    isPaid: false,
+    extrasPrice: 0,
   };
 
   const { error } = await supabase.from("bookings").insert([newBooking]);
 
-  if (error) throw new Error("Reservation could not be made");
+  if (error) throw new Error("Reservation could not be created");
 
   revalidatePath(`/cabins/${bookingData.cabinId}`);
+  redirect("/cabins/thankyou")
 }
 
 //
@@ -82,9 +88,10 @@ export async function updateReservation(bookingId, formData) {
   if (!session) throw new Error("You must be logged in");
 
   //Authorization
-  const gusestBookings = await getBookings(session.user.guestId);
-  const guestBookingsIds = gusestBookings.map((booking) => booking.id);
-  if (!guestBookingsIds.includes(guestBookingsIds))
+  const guestBookings = await getBookings(session.user.guestId);
+  const guestBookingsIds = guestBookings.map((booking) => booking.id);
+  
+  if (!guestBookingsIds.includes(bookingId))
     throw new Error("You cannot update Booking");
 
   const updatedData = {
@@ -110,6 +117,7 @@ export async function updateReservation(bookingId, formData) {
 }
 
 export async function signInAction() {
+
   return signIn("google", { redirectTo: "/account" });
 }
 
@@ -135,23 +143,22 @@ used to peform data mutations(CUD).
 To read cookies. 
 
 Note: 
-All data mutations are done in backend. So, user must be authorised to excute action. 
-The data recevied is always unsafe. Validations is required using regex. 
+All data mutations are done in backend. So, user must be authorised to execute action. 
+The data recevied is always unsafe. Validations are required using regex. 
 
 
 How to invoke ServerAction : using action attrubute of form. 
 All the form input data will be seralized. 
-
 form will automatically submit all the data to that action function. 
 
 Errors: 
 Errors are thrown and will be caught by closest error boundary.
 
+After data mutation Cache can be revaldiated using: 
+a. time based revalidation 
+b. manaul cache revalidation using: revalidatePath and tag.
+  eg: revalidatePath("/account/profile");
+*/
 
-Cache can be revaldiated using: 
-a. time based revalidation
-b. manaul cache revalidation using: revalidatePath and tag. 
-
- */
 
 /* Functions cannot be passed directly to Client component unless you explicitly expose it by marking it as "use server". */

@@ -5,6 +5,7 @@ import LoginMessage from "./LoginMessage";
 import ReservationForm from "./ReservationForm";
 
 async function Reservation({ cabin }) {
+
   const session = await auth();
 
   const [bookedDates, settings] = await Promise.all([
@@ -13,7 +14,7 @@ async function Reservation({ cabin }) {
   ]);
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 bordepr border-primary-800 min-h-[400px]">
       <DateSelector
         bookedDates={bookedDates}
         settings={settings}

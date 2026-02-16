@@ -6,7 +6,7 @@ import { useReservationContext } from "./ReservationContext";
 
 function ReservationReminder() {
   const { range, resetRange } = useReservationContext();
-
+  
   if (!range.from || !range.to) return null;
 
   return (

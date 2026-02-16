@@ -43,7 +43,7 @@ export default async function Navigation() {
             >
               Guest area
             </Link>
-          )}
+          )} 
         </li>
       </ul>
     </nav>
@@ -65,5 +65,4 @@ Entire application will be dynamic.
 
 How to get access to current session in client comp? 
 But keeping current session in server is more beneficail.  
-
 */

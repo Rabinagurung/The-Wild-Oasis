@@ -1,31 +1,31 @@
 "use client";
+
 import { differenceInDays } from "date-fns";
 import { useReservationContext } from "./ReservationContext";
 import { createBooking } from "../_lib/actions";
 import SubmitButton from "./SubmitButton";
 
 function ReservationForm({ cabin, user }) {
+
   const { range, resetRange } = useReservationContext();
   // CHANGE
   const { id, maxCapacity, regularPrice, discount } = cabin;
 
-  const numNights = differenceInDays(range.to, range.from);
+  const startDate = range.from;
+  const endDate =  range.to;
+
+  const numNights = differenceInDays(endDate, startDate);
   const cabinPrice = numNights * (regularPrice - discount);
 
   const bookingData = {
-    startDate: range.from,
-    endDate: range.to,
+    startDate,
+    endDate,
     numNights,
     cabinPrice,
-    totalPrice: cabinPrice,
-    status: "unconfirmed",
-    hasBreakfast: false,
-    isPaid: false,
-    extrasPrice: 0,
     cabinId: id,
   };
 
-  //bind is used to add additonal arguments to function and return a new function.
+  //bind is used to pass additonal arguments into the function and return a new function.
   //createBooking server action will receive additional argument initially and formatData at last as parameters.
   const createBookingWithData = createBooking.bind(null, bookingData);
 
@@ -33,7 +33,6 @@ function ReservationForm({ cabin, user }) {
     <div className="scale-[1.01]">
       <div className="bg-primary-800 text-primary-300 px-16 py-2 flex justify-between items-center">
         <p>Logged in as</p>
-
         <div className="flex gap-4 items-center">
           <img
             // Important to display google profile images
@@ -45,10 +44,9 @@ function ReservationForm({ cabin, user }) {
           <p>{user?.name}</p>
         </div>
       </div>
-
       <form
-        action={(formatData) => {
-          createBookingWithData(formatData);
+        action={async(formatData) => {
+          await createBookingWithData(formatData);
           resetRange();
         }}
         className="bg-primary-900 py-10 px-16 text-lg flex gap-5 flex-col"
@@ -71,7 +69,6 @@ function ReservationForm({ cabin, user }) {
             ))}
           </select>
         </div>
-
         <div className="space-y-2">
           <label htmlFor="observations">
             Anything we should know about your stay?
@@ -81,16 +78,16 @@ function ReservationForm({ cabin, user }) {
             id="observations"
             className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm"
             placeholder="Any pets, allergies, special requirements, etc.?"
+            required
           />
         </div>
-
         <div className="flex justify-end items-center gap-6">
-          {!numNights ? (
+          {!(startDate && endDate) ? (
             <p className="text-primary-300 text-base">
               Start by selecting dates
             </p>
           ) : (
-            <SubmitButton pendingText="Creating.....">Reserve Now</SubmitButton>
+            <SubmitButton pendingText="Reserving...">Reserve Now</SubmitButton>
           )}
         </div>
       </form>
