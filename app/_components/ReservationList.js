@@ -17,7 +17,7 @@ function ReservationList({ bookings }) {
   }
 
   return (
-    <ul className="space-y-6">
+    <ul className="space-y-6 max-h-[calc(100vh-14rem)] overflow-y-auto pr-2">
       {optimisticBookings.map((booking) => (
         <ReservationCard
           booking={booking}

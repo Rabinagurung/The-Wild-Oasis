@@ -6,6 +6,7 @@ import { useFormStatus } from "react-dom";
 function UpdateProfileForm({ guest, children }) {
   // CHANGE
   const { fullName, countryFlag, email, nationalID } = guest;
+  console.log({ countryFlag });
 
   return (
     <form
@@ -74,6 +75,7 @@ function Button() {
     </button>
   );
 }
+
 export default UpdateProfileForm;
 
 /* Guest data is recevied and set as default values for form.

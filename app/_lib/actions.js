@@ -55,7 +55,7 @@ export async function createBooking(bookingData, formData) {
   if (error) throw new Error("Reservation could not be created");
 
   revalidatePath(`/cabins/${bookingData.cabinId}`);
-  redirect("/cabins/thankyou")
+  redirect("/cabins/thankyou");
 }
 
 //
@@ -90,7 +90,7 @@ export async function updateReservation(bookingId, formData) {
   //Authorization
   const guestBookings = await getBookings(session.user.guestId);
   const guestBookingsIds = guestBookings.map((booking) => booking.id);
-  
+
   if (!guestBookingsIds.includes(bookingId))
     throw new Error("You cannot update Booking");
 
@@ -110,14 +110,14 @@ export async function updateReservation(bookingId, formData) {
 
   //Revalidation
   revalidatePath("/account/reservations");
-  revalidatePath(`/account/reservations/${bookingId}`);
+  revalidatePath(`/account/reservations/edit/
+    ${bookingId}`);
 
   //Redirect
   redirect("/account/reservations");
 }
 
 export async function signInAction() {
-
   return signIn("google", { redirectTo: "/account" });
 }
 
@@ -159,6 +159,5 @@ a. time based revalidation
 b. manaul cache revalidation using: revalidatePath and tag.
   eg: revalidatePath("/account/profile");
 */
-
 
 /* Functions cannot be passed directly to Client component unless you explicitly expose it by marking it as "use server". */
