@@ -1,9 +1,19 @@
+import { auth } from "../_lib/auth";
+
 export const metadata = {
   title: "Guests area",
 };
 
-export default function Page() {
-  return <h1>Account Page</h1>;
+export default async function Page() {
+  const session = await auth();
+
+  const firstname = session.user.name.split(" ").at(0);
+
+  return (
+    <h1 className="font-semibold text-2xl text-accent-400 mb-7">
+      Welcome, {firstname}
+    </h1>
+  );
 }
 
 /* Protecting guests area routes from unauthorized users. How ?

@@ -35,7 +35,6 @@ export async function getCabinPrice(id) {
 }
 
 export const getCabins = async function () {
-
   const { data, error } = await supabase
     .from("cabins")
     .select("id, name, maxCapacity, regularPrice, discount, image")
@@ -138,10 +137,16 @@ export async function getSettings() {
 export async function getCountries() {
   try {
     const res = await fetch(
-      "https://restcountries.com/v2/all?fields=name,flag"
+      "https://api.restcountries.com/countries/v5?limit=100",
+      {
+        headers: {
+          Authorization: "Bearer rc_live_4a3ffb92e61a4da28dd47da470c192d3",
+        },
+      }
     );
+
     const countries = await res.json();
-    return countries;
+    return countries.data.objects;
   } catch {
     throw new Error("Could not fetch countries");
   }
@@ -159,15 +164,13 @@ export async function createGuest(newGuest) {
 }
 
 export async function updateBooking(id, updatedFields) {
-
-
   const { data, error } = await supabase
     .from("bookings")
     .update(updatedFields)
     .eq("id", id)
     .select()
     .single();
-  
+
   if (error) {
     console.error(error);
     throw new Error("Booking could not be updated");
