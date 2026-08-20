@@ -140,7 +140,7 @@ export async function getCountries() {
       "https://api.restcountries.com/countries/v5?limit=100",
       {
         headers: {
-          Authorization: "Bearer rc_live_4a3ffb92e61a4da28dd47da470c192d3",
+          Authorization: "Bearer " + process.env.RESTCOUNTRIES_KEY,
         },
       }
     );
