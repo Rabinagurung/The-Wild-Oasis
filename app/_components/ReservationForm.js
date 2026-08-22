@@ -5,14 +5,23 @@ import { useReservationContext } from "./ReservationContext";
 import { createBooking } from "../_lib/actions";
 import SubmitButton from "./SubmitButton";
 
-function ReservationForm({ cabin, user }) {
+function ReservationForm({ cabin, user, settings }) {
 
   const { range, resetRange } = useReservationContext();
   // CHANGE
   const { id, maxCapacity, regularPrice, discount } = cabin;
+  const startDate = range?.from;
+  const endDate =  range?.to;
 
-  const startDate = range.from;
-  const endDate =  range.to;
+  const { minBookingLength, maxBookingLength, maxGuestsPerBooking } = settings;
+
+  if (
+    typeof minBookingLength !== "number" ||
+    typeof maxBookingLength !== "number" ||
+    typeof maxGuestsPerBooking !== "number"
+  ) {
+    return null;
+  }
 
   const numNights = differenceInDays(endDate, startDate);
   const cabinPrice = numNights * (regularPrice - discount);

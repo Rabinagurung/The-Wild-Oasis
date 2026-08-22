@@ -13,6 +13,7 @@ export async function generateMetadata({ params }) {
 export async function generateStaticParams() {
   const data = await getCabins();
 
+
   const ids = data.map((cabin) => ({
     cabinId: String(cabin.id),
   }));
@@ -22,7 +23,6 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }) {
   const cabin = await getCabin(params.cabinId);
- 
 
   return (
     <div className="max-w-6xl mx-auto mt-8 ">
