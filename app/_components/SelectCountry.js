@@ -2,12 +2,12 @@ import { getCountries } from "@/app/_lib/data-service";
 
 // Let's imagine your colleague already built this component 😃
 async function SelectCountry({ defaultCountry, name, id, className }) {
-  console.log(defaultCountry);
   const countries = await getCountries();
 
-  const flag =
-    countries.find((country) => country.names.common === defaultCountry).flag
-      .url_svg ?? "";
+  const selectedCountry = countries.find(
+    (country) => country.names.common === defaultCountry
+  );
+  const flag = selectedCountry?.flag?.url_svg ?? "";
 
   return (
     <select
@@ -15,8 +15,9 @@ async function SelectCountry({ defaultCountry, name, id, className }) {
       id={id}
       // Here we use a trick to encode BOTH the country name and the flag into the value.
       // Then we split them up again later in the server action
-      defaultValue={`${defaultCountry}%${flag}`}
+      defaultValue={selectedCountry ? `${defaultCountry}%${flag}` : ""}
       className={className}
+      required
     >
       <option value="">Select country...</option>
       {countries.map((c) => (
