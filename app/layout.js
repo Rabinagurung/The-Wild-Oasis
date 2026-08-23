@@ -10,8 +10,8 @@ const josefin = Josefin_Sans({
 
 export const metadata = {
   title: {
-    template: "%s / The Wild Oasis",
-    default: "Welcome / The Wild Oasis",
+    template: "%s / The Banff Oasis",
+    default: "Welcome / The Banff Oasis",
   },
 
   description:
@@ -65,7 +65,7 @@ whereas children prop will be dynamic.
 
 /*More: We can export some page metadata from this layout. 
 page metadata: pages title. 
-We will get <title>"The Wild Oasis"</title/> in page source just by exporting metadata from this layout. 
+We will get <title>"The Banff Oasis"</title/> in page source just by exporting metadata from this layout.
 
 So, next js is all about conventions for names of the files. 
 page.js will return us pages, 
@@ -79,7 +79,7 @@ We have got about, account, cabins routes for now.
 */
 
 /* Next.js built in way of adding metadata to website. 
-By exporting metadata as title: "The Wild Oasis", it will be added to <html> as <title> tag. 
+By exporting metadata as title: "The Banff Oasis", it will be added to <html> as <title> tag.
 text should be not manullay added to the <html> code like: title and metaTag. 
 They should be added to metadata object thats Next.js convention. 
 
@@ -88,11 +88,11 @@ The metadata object can be added from each individual page that will overwrite t
 
 
 a. 
-To configure website title like: About/The Wild Oasis, Cabins/The Wild Oasis
+To configure website title like: About/The Banff Oasis, Cabins/The Banff Oasis
 export const metadata = {
   title: {
-    template: "%s / The Wild Oasis"
-    default: "Welcome / The Wild Oasis"
+    template: "%s / The Banff Oasis"
+    default: "Welcome / The Banff Oasis"
   }
 }, where %s will be replaced with exported title passed from individual pages. 
 

@@ -5,17 +5,17 @@ import logo from "@/public/logo.png";
 function Logo() {
   return (
     <Link href="/" className="flex items-center gap-4 z-10">
-      {/* <Image width="60" height="60" src="/logo.png" alt="The Wild Oasis Logo" /> */}
+      {/* <Image width="60" height="60" src="/logo.png" alt="The Banff Oasis Logo" /> */}
       <Image
         src={logo}
         width="60"
         height="60"
-        alt="The Wild Oasis Logo"
+        alt="The Banff Oasis Logo"
         quality={100}
         placeholder="blur"
       />
       <span className="text-xl font-semibold text-primary-100">
-        The Wild Oasis
+        The Banff Oasis
       </span>
     </Link>
   );
