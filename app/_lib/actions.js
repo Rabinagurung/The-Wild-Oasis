@@ -19,7 +19,15 @@ export async function updateGuest(formData) {
     throw Error("Provide valid nationalID");
   }
 
-  const [nationality, countryFlag] = formData.get("nationality").split("%");
+  const selectedCountry = formData.get("nationality");
+  if (
+    typeof selectedCountry !== "string" ||
+    !selectedCountry.includes("%")
+  ) {
+    throw Error("Select a valid country");
+  }
+
+  const [nationality, countryFlag] = selectedCountry.split("%");
 
   const updatedGuestData = { nationalID, nationality, countryFlag };
 
@@ -119,6 +127,10 @@ export async function updateReservation(bookingId, formData) {
 
 export async function signInAction() {
   return signIn("google", { redirectTo: "/account" });
+}
+
+export async function signInAsGuestAction() {
+  return signIn("guest", { redirectTo: "/account" });
 }
 
 export async function signOutAction() {

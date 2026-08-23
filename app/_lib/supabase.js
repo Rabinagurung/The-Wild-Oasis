@@ -1,9 +1,17 @@
 import { createClient } from "@supabase/supabase-js";
 
-export const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
-);
+const supabaseUrl =
+  process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey =
+  process.env.SUPABASE_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error(
+    "Missing Supabase environment variables. Set SUPABASE_URL and SUPABASE_KEY in Vercel, or use NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY."
+  );
+}
+
+export const supabase = createClient(supabaseUrl, supabaseKey);
 
 /* The environment variables are used to store supabase url and key because Next.js has built in support for supabase urls.
 They are simply some variables that we can set up and are available just to Node.js env in which application is running.

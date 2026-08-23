@@ -1,6 +1,14 @@
 import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { createGuest, getGuest } from "./data-service";
+
+const GUEST_SESSION_MAX_AGE = 24 * 60 * 60 * 1000;
+const GUEST_EMAIL_DOMAIN = "guest.local";
+
+function createGuestEmail(sessionId) {
+  return `guest-${sessionId}@${GUEST_EMAIL_DOMAIN}`;
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -8,22 +16,47 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
     }),
+    Credentials({
+      id: "guest",
+      name: "Guest",
+      credentials: {},
+      async authorize() {
+        const sessionId = crypto.randomUUID();
+        const email = createGuestEmail(sessionId);
+        const guest = await createGuest({
+          email,
+          fullName: "Guest",
+        });
+
+        return {
+          id: sessionId,
+          name: "Guest",
+          email,
+          image: null,
+          guestId: guest.id,
+          isGuest: true,
+          guestExpiresAt: Date.now() + GUEST_SESSION_MAX_AGE,
+        };
+      },
+    }),
   ],
 
   /** Callbacks are asynchronous functions you can use to control what happens 
    * when an auth-related action is performed. Callbacks allow you to implement access 
    * controls without a database or to integrate with external databases or APIs. */
   callbacks: {
-    authorized({ auth, request }) {
+    authorized({ auth }) {
       
       //auth: session obj | null and request: NextRequest
       //- true: authorized and user can navigate to that route.
       //- false: unauthorized and user cannot navigate to that route. 
-      return !!auth?.user;
+      return !!auth?.user?.guestId;
     },
 
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account }) {
       try {
+        if (account?.provider === "guest") return true;
+
         //Get guest
         const existingGuest = await getGuest(user.email);
 
@@ -36,6 +69,38 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       } catch (error) {
         return false;
       }
+    },
+
+    async jwt({ token, user, account }) {
+      if (user) {
+        const guest = user.guestId
+          ? { id: user.guestId }
+          : await getGuest(user.email);
+
+        if (!guest) return null;
+
+        token.guestId = guest.id;
+        token.isGuest = account?.provider === "guest" || user.isGuest === true;
+
+        if (token.isGuest) {
+          token.guestExpiresAt =
+            user.guestExpiresAt ?? Date.now() + GUEST_SESSION_MAX_AGE;
+        }
+      }
+
+      if (
+        token.isGuest &&
+        (!token.guestExpiresAt || Date.now() > Number(token.guestExpiresAt))
+      )
+        return null;
+
+      if (!token.email) return null;
+
+      const guest = await getGuest(token.email);
+      if (!guest) return null;
+
+      token.guestId = guest.id;
+      return token;
     },
 
     /** 
@@ -52,10 +117,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     The token argument is only available when using the jwt session strategy, 
     and the user argument is only available when using the database session strategy.
     */
-    async session({ session, user }) {
-      const guest = await getGuest(session.user.email);
-
-      session.user.guestId = guest.id;
+    async session({ session, token }) {
+      session.user.guestId = token.guestId;
+      session.user.isGuest = token.isGuest === true;
+      session.user.guestExpiresAt = token.guestExpiresAt ?? null;
       return session;
     },
   },
