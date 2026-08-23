@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
         min-h-screen flex flex-col relative`}
       >
         <Header />
-        <div className="flex-1 px-8 py-12 grid">
+        <div className="flex-1 px-4 sm:px-8 py-8 sm:py-12 grid">
           <main className="max-w-7xl mx-auto w-full">
             <ReservationProvider>{children}</ReservationProvider>
           </main>

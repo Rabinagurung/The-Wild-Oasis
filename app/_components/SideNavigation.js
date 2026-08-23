@@ -25,10 +25,10 @@ const navLinks = [
 
 function SideNavigation() {
   return (
-    <nav className="border-r border-primary-900">
-      <ul className="flex flex-col gap-2 h-full text-lg">
+    <nav className="border-b lg:border-b-0 lg:border-r border-primary-900">
+      <ul className="flex lg:flex-col gap-2 h-full text-lg overflow-x-auto">
         {navLinks.map((link) => (
-          <li key={link.name}>
+          <li key={link.name} className="shrink-0">
             <a
               className={`py-3 px-5 hover:bg-primary-900 hover:text-primary-100 transition-colors flex items-center gap-4 font-semibold text-primary-200`}
               href={link.href}
@@ -39,7 +39,7 @@ function SideNavigation() {
           </li>
         ))}
 
-        <li className="mt-auto">
+        <li className="lg:mt-auto shrink-0">
           <SignOutButton />
         </li>
       </ul>

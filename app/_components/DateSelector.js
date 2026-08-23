@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   differenceInCalendarDays,
   differenceInDays,
@@ -27,6 +27,19 @@ function DateSelector({ bookedDates, settings, cabin }) {
 
   const { range, setRange, resetRange } = useReservationContext();
   const [error, setError] = useState("");
+  const [numberOfMonths, setNumberOfMonths] = useState(1);
+
+  useEffect(function () {
+    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+
+    function handleChange(e) {
+      setNumberOfMonths(e.matches ? 2 : 1);
+    }
+
+    handleChange(mediaQuery);
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
 
   const { regularPrice, discount } = cabin;
 
@@ -86,7 +99,7 @@ function DateSelector({ bookedDates, settings, cabin }) {
         }}
         startMonth={new Date()}
         endMonth={new Date(2027, 1)}
-        numberOfMonths={2}
+        numberOfMonths={numberOfMonths}
         disabled={(currDate) =>  
           isPast(currDate) ||
           bookedDates.some((date) => isSameDay(date, currDate))
@@ -98,8 +111,8 @@ function DateSelector({ bookedDates, settings, cabin }) {
           {error}
         </p>
       )}
-      <div className="flex items-center justify-between px-8 bg-accent-500 text-primary-800 h-[72px]">
-        <div className="flex items-baseline gap-6">
+      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 sm:px-8 py-3 sm:py-0 bg-accent-500 text-primary-800 sm:h-[72px]">
+        <div className="flex flex-wrap items-baseline gap-3 sm:gap-6">
           <p className="flex gap-2 items-baseline">
             {discount > 0 ? (
               <>
